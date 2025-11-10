@@ -1,4 +1,4 @@
-name: Deploy React App to EC2
+name: Deploy React App via Self-Hosted Runner
 
 on:
   push:
@@ -6,31 +6,32 @@ on:
 
 jobs:
   build-and-deploy:
+    # This is the key change: it tells GitHub to use your runner
     runs-on: [react]
 
     steps:
+      # 1. Checkout the repository code into the runner's workspace
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Set up a specific version of Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
+      # 3. Install dependencies and build the application
       - name: Install dependencies
         run: npm install
-
       - name: Build application
         run: npm run build
 
-      - name: Deploy to EC2 instance
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          source: "build/*"
-          target: "/var/www/nrityangan-kathak"
-          strip_components: 1
+      # 4. Deploy by copying files locally
+      - name: Deploy to Webroot
+        run: |
+          echo "Starting deployment to /var/www/nrityangan..."
+          # Use rsync to efficiently sync the build directory to the webroot.
+          # The --delete flag removes old files from the webroot that are no longer in the build.
+          rsync -av --delete build/ /var/www/nrityangan/
+          echo "Deployment successful!"
