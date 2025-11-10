@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ip-172-31-18-165
+    runs-on: react
 
     steps:
       - name: Checkout code
