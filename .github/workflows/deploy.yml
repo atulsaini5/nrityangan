@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ip-172-31-18-165
 
     steps:
       - name: Checkout code
