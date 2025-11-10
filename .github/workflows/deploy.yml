@@ -1,4 +1,4 @@
-name: Deploy React App to EC2
+name: Deploy React App to EC2 via S3 and SSM
 
 on:
   push:
@@ -9,28 +9,56 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
+      # 3. Install dependencies and build the app
       - name: Install dependencies
         run: npm install
-
       - name: Build application
         run: npm run build
 
-      - name: Deploy to EC2 instance
-        uses: appleboy/scp-action@v0.1.7
+      # 4. Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          source: "build/*"
-          target: "/var/www/nrityangan"
-          strip_components: 1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # 5. Zip the build output
+      - name: Zip build folder
+        run: zip -r build.zip ./build
+
+      # 6. Upload zip to S3
+      - name: Upload to S3
+        run: aws s3 cp build.zip s3://${{ secrets.S3_BUCKET_NAME }}/build.zip
+
+      # 7. Send deployment command to EC2 via SSM
+      - name: Deploy to EC2
+        run: |
+          aws ssm send-command \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploying Nrityangan Kathak Studio" \
+            --parameters commands="[
+              '#!/bin/bash',
+              'set -e',
+              'WEBROOT_PATH=/var/www/nrityangan-kathak',
+              'S3_URI=s3://${{ secrets.S3_BUCKET_NAME }}/build.zip',
+              'cd /tmp',
+              'aws s3 cp \$S3_URI ./build.zip',
+              'rm -rf \$WEBROOT_PATH/*',
+              'unzip -o build.zip -d \$WEBROOT_PATH',
+              'mv \$WEBROOT_PATH/build/* \$WEBROOT_PATH/',
+              'rmdir \$WEBROOT_PATH/build',
+              'rm build.zip'
+            ]"
