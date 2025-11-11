@@ -33,5 +33,6 @@ jobs:
           echo "Starting deployment to /var/www/nrityangan..."
           # Use rsync to efficiently sync the build directory to the webroot.
           # The --delete flag removes old files from the webroot that are no longer in the build.
-          rsync -av --delete build/ /var/www/nrityangan/
+          cp build/ /var/www/nrityangan/
+          rm -rf build/
           echo "Deployment successful!"
