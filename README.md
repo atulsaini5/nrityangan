@@ -10,7 +10,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/177qtpn1l-Icoa8a-tjTdU5
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:**  Node.js 14+. Older LTS versions work fine with the downgraded Vite setup in this repo.
 
 
 1. Install dependencies:
@@ -18,3 +18,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/177qtpn1l-Icoa8a-tjTdU5
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Continuous integration
+
+Pushes and pull requests automatically run `npm ci` and `npm run build` through the workflow in [.github/workflows/ci.yml](.github/workflows/ci.yml). The workflow now pins Node 14 to mirror production constraints.
