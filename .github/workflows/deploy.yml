@@ -1,4 +1,4 @@
-name: Deploy React App via Self-Hosted Runner
+name: Deploy Self-hosted
 
 on:
   push:
