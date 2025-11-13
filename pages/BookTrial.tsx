@@ -1,18 +1,26 @@
-
 import React, { useState } from 'react';
 
-const FormInput: React.FC<{ label: string, type: string, name: string, value: string, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, required?: boolean }> = 
-({ label, type, name, value, onChange, required=true }) => (
-  <div>
-    <label htmlFor={name} className="block text-sm font-medium text-zinc-700">{label}{required && '*'}</label>
-    <input 
-      type={type} 
+const FormInput: React.FC<{ label: string; type: string; name: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; required?: boolean }> = ({
+  label,
+  type,
+  name,
+  value,
+  onChange,
+  required = true,
+}) => (
+  <div className="space-y-2">
+    <label htmlFor={name} className="text-xs uppercase tracking-[0.3em] text-brand-terracotta">
+      {label}
+      {required && '*'}
+    </label>
+    <input
+      type={type}
       name={name}
       id={name}
       value={value}
       onChange={onChange}
       required={required}
-      className="mt-1 block w-full px-3 py-2 bg-white border border-zinc-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-gold focus:border-brand-gold sm:text-sm"
+      className="w-full rounded-full border border-brand-terracotta/30 bg-white/80 px-4 py-3 text-sm text-brand-ink placeholder:text-brand-ink/40 focus:border-brand-terracotta focus:outline-none"
     />
   </div>
 );
@@ -24,6 +32,7 @@ const BookTrial: React.FC = () => {
     email: '',
     phone: '',
     age: '',
+    experience: '',
     message: '',
   });
 
@@ -33,40 +42,75 @@ const BookTrial: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    alert('Booking submitted! We will get back to you soon.');
-    setFormData({ firstName: '', lastName: '', email: '', phone: '', age: '', message: '' });
+    alert('Your trial class request has been received! We will confirm shortly.');
+    setFormData({ firstName: '', lastName: '', email: '', phone: '', age: '', experience: '', message: '' });
   };
 
   return (
-    <div className="pt-24 bg-trial-pattern bg-cover bg-center min-h-screen">
-      <section className="py-20">
-        <div className="container mx-auto px-6 flex justify-center">
-          <div className="w-full max-w-2xl bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-lg shadow-2xl">
-            <h1 className="text-4xl md:text-5xl font-serif text-brand-brown text-center mb-2">Book a Trial Class</h1>
-            <p className="text-center text-zinc-600 mb-8">Fill in the form below to book your free trial class.</p>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div className="space-y-24 pb-24">
+      <section className="relative flex items-center justify-center bg-hero-pattern bg-cover bg-center py-32">
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="relative container mx-auto px-6 text-center text-white">
+          <p className="uppercase tracking-[0.4em] text-sm">Join Nrityangan</p>
+          <h1 className="mt-4 font-serif text-5xl md:text-6xl">Book your trial class</h1>
+          <p className="mx-auto mt-6 max-w-2xl text-white/80">
+            Explore the rhythm, grace and storytelling of Kathak through an immersive introductory session with our faculty.
+          </p>
+        </div>
+      </section>
+
+      <section className="container mx-auto px-6">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] items-start">
+          <div className="rounded-3xl border border-brand-terracotta/30 bg-white/90 p-8 shadow-lg">
+            <p className="uppercase tracking-[0.4em] text-xs text-brand-terracotta">What to expect</p>
+            <h2 className="mt-3 font-serif text-3xl text-brand-ink">Your first visit</h2>
+            <ul className="mt-6 space-y-3 text-sm text-brand-ink/70">
+              <li>• Guided studio tour and introduction to our faculty</li>
+              <li>• Warm-up, footwork drills and abhinaya exploration</li>
+              <li>• Discussion on goals, batch placement and schedules</li>
+              <li>• Q&amp;A on costumes, practice routines and performances</li>
+            </ul>
+            <div className="mt-8 rounded-3xl bg-brand-terracotta/10 p-6">
+              <p className="text-xs uppercase tracking-[0.3em] text-brand-terracotta">Trial Timings</p>
+              <p className="mt-2 text-sm text-brand-ink/70">Weekdays · 5:30 – 7:00 PM</p>
+              <p className="text-sm text-brand-ink/70">Weekends · 11:00 AM – 1:00 PM</p>
+            </div>
+          </div>
+
+          <div className="rounded-3xl bg-white/95 p-8 md:p-12 shadow-2xl">
+            <h2 className="font-serif text-3xl text-brand-ink">Reserve your spot</h2>
+            <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <FormInput label="First Name" type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
                 <FormInput label="Last Name" type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
               </div>
-              <FormInput label="Email" type="email" name="email" value={formData.email} onChange={handleChange} />
-              <FormInput label="Phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} required={false} />
-              <FormInput label="Age" type="number" name="age" value={formData.age} onChange={handleChange} />
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-zinc-700">Message</label>
-                <textarea 
-                  name="message"
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormInput label="Email" type="email" name="email" value={formData.email} onChange={handleChange} />
+                <FormInput label="Phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} required={false} />
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormInput label="Age" type="number" name="age" value={formData.age} onChange={handleChange} />
+                <FormInput label="Kathak Experience" type="text" name="experience" value={formData.experience} onChange={handleChange} required={false} />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="message" className="text-xs uppercase tracking-[0.3em] text-brand-terracotta">
+                  Tell us about your goals
+                </label>
+                <textarea
                   id="message"
-                  rows={4}
+                  name="message"
+                  rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-zinc-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-gold focus:border-brand-gold sm:text-sm"
+                  className="w-full rounded-3xl border border-brand-terracotta/30 bg-white/80 px-4 py-3 text-sm text-brand-ink placeholder:text-brand-ink/40 focus:border-brand-terracotta focus:outline-none"
                 ></textarea>
               </div>
-              <div className="text-center pt-4">
-                <button type="submit" className="w-full sm:w-auto inline-block bg-brand-brown text-white font-semibold px-12 py-3 rounded-full hover:bg-brand-gold transition-colors duration-300">
-                  Book Now
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  className="inline-flex items-center rounded-full bg-brand-terracotta px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white hover:bg-brand-ink transition-colors duration-300"
+                >
+                  Submit Request
                 </button>
               </div>
             </form>
