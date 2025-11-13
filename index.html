@@ -1,47 +1,57 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kathak Dance School</title>
+    <title>Nrityangan Kathak Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    >
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              'serif': ['Forum', 'serif'],
-              'sans': ['Poppins', 'sans-serif'],
+              serif: ['\"Playfair Display\"', 'serif'],
+              sans: ['Montserrat', 'sans-serif'],
             },
             colors: {
-              'brand-brown': '#5a3a2e',
-              'brand-beige': '#f5f0eb',
-              'brand-gold': '#c4a289',
+              'brand-ink': '#2f1b16',
+              'brand-terracotta': '#a5533d',
+              'brand-cream': '#f5eee6',
+              'brand-cocoa': '#6b3b2a',
+              'brand-soft-gold': '#d2b48c',
             },
             backgroundImage: {
-              'hero-pattern': "url('https://picsum.photos/seed/kathakHero/1920/1080')",
-              'trial-pattern': "url('https://picsum.photos/seed/kathakTrial/1920/1080')",
-            }
-          }
-        }
+              'hero-pattern': "url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1920&q=80')",
+              'studio-pattern': "url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1600&q=80')",
+              'texture-paper': "url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1600&q=80')",
+            },
+          },
+        },
       }
     </script>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.5"
-  }
-}
-</script>
-</head>
-  <body>
+    <style>
+      body {
+        background-color: #f5eee6;
+      }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.5"
+      }
+    }
+    </script>
+  </head>
+  <body class="font-sans bg-brand-cream text-brand-ink">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
